@@ -11,17 +11,17 @@ describe Lita::Handlers::OnewheelFinance, lita_handler: true do
   #end
 
   it 'quotes up' do
-    mock_up 'alphavantage-global-quote'
+    mock_up 'worldtradedata-quote-up'
     send_command 'quote lulu'
     puts replies.last
-    expect(replies.last).to include('LULU: $230.83')
+    expect(replies.last).to include('NASDAQ - LULU: $233.01')
   end
 
   it 'quotes down' do
-    mock_up 'alphavantage-quote-down'
-    send_command 'quote clb'
+    mock_up 'worldtradedata-quote-down'
+    send_command 'quote xlp'
     puts replies.last
-    expect(replies.last).to include('CLB: $37.67')
-    expect(replies.last).to include('$-9.79')
+    expect(replies.last).to include('NYSE - XLP: $62.51')
+    expect(replies.last).to include('↯$-0.47')
   end
 end

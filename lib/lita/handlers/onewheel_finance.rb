@@ -1,6 +1,6 @@
 require 'rest-client'
 
-class Colors
+class IrcColors
   prefix = "\x03"
   @white  = "#{prefix}00"
   @black  = "#{prefix}01"
@@ -28,7 +28,7 @@ class Colors
   end
 end
 
-class GlobalQuote
+class AlphaVantageQuote
   attr_reader :symbol, :open, :high, :low, :price, :volume, :trading_day, :prev_close, :change, :change_percent
 
   def initialize(json_blob)
@@ -67,6 +67,47 @@ class GlobalQuote
   end
 end
 
+class WorldTradeDataQuote
+  attr_reader :symbol, :open, :high, :low, :price, :volume, :trading_day, :prev_close, :change, :change_percent, :exchange
+
+  def initialize(json_blob)
+    Lita.logger.debug "parsing: #{json_blob}"
+    hash = JSON.parse(json_blob)
+    quote = hash['data'][0]
+
+    quote.keys.each do |key|
+      case key
+      when "symbol"
+        @symbol = quote[key]
+      when "price_open"
+        @open = self.fix_number quote[key]
+      when "day_high"
+        @high = self.fix_number quote[key]
+      when "day_low"
+        @low = self.fix_number quote[key]
+      when "price"
+        @price = self.fix_number quote[key]
+      when "volume"
+        @volume = quote[key].to_i
+      when "last_trade_time"
+        @trading_day = quote[key]
+      when "08. previous close"
+        @prev_close = self.fix_number quote[key]
+      when "day_change"
+        @change = self.fix_number quote[key]
+      when "change_pct"
+        @change_percent = self.fix_number quote[key]
+      when 'stock_exchange_short'
+        @exchange = quote[key].sub /NYSEARCA/, 'NYSE'
+      end
+    end
+  end
+
+  def fix_number(price_str)
+    price_str.to_f.round(2)
+  end
+end
+
 module Lita
   module Handlers
     class OnewheelFinance < Handler
@@ -74,20 +115,36 @@ module Lita
       route /quote\s+(.+)/i, :handle_quote, command: true
 
       def handle_quote(response)
-        url = "https://www.alphavantage.co/query"
-        Lita.logger.debug "#{url} #{{function: 'GLOBAL_QUOTE', symbol: response.matches[0][0], apikey: config.apikey}.inspect}"
-        resp = RestClient.get url, {params: {function: 'GLOBAL_QUOTE', symbol: response.matches[0][0], apikey: config.apikey}}
-        stock = GlobalQuote.new resp
+        stock = handle_world_trade_data response.matches[0][0]
 
-        str = "#{stock.symbol}: $#{stock.price} "
+        str = "#{stock.exchange} - #{stock.symbol}: $#{stock.price} "
         if stock.change >= 0
           # if irc
-          str += "#{Colors::green} ⬆$#{stock.change}#{Colors::reset}, #{Colors::green}#{stock.change_percent}%#{Colors::reset} "
+          str += "#{IrcColors::green} ⬆$#{stock.change}#{IrcColors::reset}, #{IrcColors::green}#{stock.change_percent}%#{IrcColors::reset} "
         else
-          str += "#{Colors::red} ↯$#{stock.change}#{Colors::reset}, #{Colors::red}#{stock.change_percent}%#{Colors::reset} "
+          str += "#{IrcColors::red} ↯$#{stock.change}#{IrcColors::reset}, #{IrcColors::red}#{stock.change_percent}%#{IrcColors::reset} "
         end
 
         response.reply str
+      end
+
+      def handle_world_trade_data(symbol)
+        url = "https://api.worldtradingdata.com/api/v1/stock"
+        params = {symbol: symbol, api_token: config.apikey}
+
+        Lita.logger.debug "#{url} #{params.inspect}"
+
+        resp = RestClient.get url, {params: params}
+        stock = WorldTradeDataQuote.new resp
+      end
+
+      # deprecated for now
+      def handle_alphavantage
+        url = "https://www.alphavantage.co/query"
+        params = {function: 'GLOBAL_QUOTE', symbol: response.matches[0][0], apikey: config.apikey}
+        Lita.logger.debug "#{url} #{params.inspect}"
+        resp = RestClient.get url, {params: params}
+        stock = GlobalQuote.new resp
       end
 
       Lita.register_handler(self)

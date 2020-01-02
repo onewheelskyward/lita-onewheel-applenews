@@ -1,0 +1,32 @@
+{
+  "symbols_requested": 1,
+  "symbols_returned": 1,
+  "data": [
+    {
+      "symbol": "XLP",
+      "name": "Consumer Staples Select Sector SPDR Fund",
+      "currency": "USD",
+      "price": "62.51",
+      "price_open": "63.10",
+      "day_high": "63.10",
+      "day_low": "62.31",
+      "52_week_high": "63.36",
+      "52_week_low": "50.11",
+      "day_change": "-0.47",
+      "change_pct": "-0.75",
+      "close_yesterday": "62.98",
+      "market_cap": "13136800768",
+      "volume": "10945550",
+      "volume_avg": "6313883",
+      "shares": "210172000",
+      "stock_exchange_long": "NYSE Arca (Archipelago Exchange)",
+      "stock_exchange_short": "NYSEARCA",
+      "timezone": "EST",
+      "timezone_name": "America/New_York",
+      "gmt_offset": "-18000",
+      "last_trade_time": "2020-01-02 15:49:03",
+      "pe": "N/A",
+      "eps": "N/A"
+    }
+  ]
+}
