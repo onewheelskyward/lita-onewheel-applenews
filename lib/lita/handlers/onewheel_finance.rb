@@ -71,7 +71,7 @@ module Lita
   module Handlers
     class OnewheelFinance < Handler
       config :apikey, required: true
-      route /quote\s+(\w+)/i, :handle_quote, command: true
+      route /quote\s+(.+)/i, :handle_quote, command: true
 
       def handle_quote(response)
         url = "https://www.alphavantage.co/query"

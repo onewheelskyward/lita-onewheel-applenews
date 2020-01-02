@@ -17,3 +17,4 @@ test/version_tmp
 tmp
 bin
 .idea
+lita_config.rb
