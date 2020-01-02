@@ -76,7 +76,7 @@ module Lita
       def handle_quote(response)
         url = "https://www.alphavantage.co/query"
         Lita.logger.debug "#{url} #{{function: 'GLOBAL_QUOTE', symbol: response.matches[0][0], apikey: config.apikey}.inspect}"
-        resp = RestClient.get url, {function: 'GLOBAL_QUOTE', symbol: response.matches[0][0], apikey: config.apikey}
+        resp = RestClient.get url, {params: {function: 'GLOBAL_QUOTE', symbol: response.matches[0][0], apikey: config.apikey}}
         stock = GlobalQuote.new resp
 
         str = "#{stock.symbol}: $#{stock.price} "
