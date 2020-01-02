@@ -41,28 +41,28 @@ class GlobalQuote
       when "01. symbol"
         @symbol = quote[key]
       when "02. open"
-        @open = self.fix_price quote[key]
+        @open = self.fix_number quote[key]
       when "03. high"
-        @high = self.fix_price quote[key]
+        @high = self.fix_number quote[key]
       when "04. low"
-        @low = self.fix_price quote[key]
+        @low = self.fix_number quote[key]
       when "05. price"
-        @price = self.fix_price quote[key]
+        @price = self.fix_number quote[key]
       when "06. volume"
         @volume = quote[key]
       when "07. latest trading day"
         @trading_day = quote[key]
       when "08. previous close"
-        @prev_close = self.fix_price quote[key]
+        @prev_close = self.fix_number quote[key]
       when "09. change"
-        @change = self.fix_price quote[key]
+        @change = self.fix_number quote[key]
       when "10. change percent"
-        @change_percent = quote[key]
+        @change_percent = self.fix_number quote[key]
       end
     end
   end
 
-  def fix_price(price_str)
+  def fix_number(price_str)
     price_str.to_f.round(2)
   end
 end
