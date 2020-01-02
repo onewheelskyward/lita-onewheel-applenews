@@ -135,6 +135,8 @@ module Lita
         Lita.logger.debug "#{url} #{params.inspect}"
 
         resp = RestClient.get url, {params: params}
+        Lita.logger.debug "response: #{resp}"
+
         stock = WorldTradeDataQuote.new resp
       end
 
