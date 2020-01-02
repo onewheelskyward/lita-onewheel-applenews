@@ -31,9 +31,9 @@ describe Lita::Handlers::OnewheelFinance, lita_handler: true do
     expect(replies.last).to eq('`in` not found on any stock exchange.')
   end
 
-  it 'searches with 1 result' do
-    mock_up 'worldtradedata-search-1'
-    send_command 'quote nike'
-    expect(replies.last).to eq('NKE')
-  end
+  #it 'searches with 1 result' do
+  #  mock_up 'worldtradedata-search-1'
+  #  send_command 'quote nike'
+  #  expect(replies.last).to eq('NKE')
+  #end
 end

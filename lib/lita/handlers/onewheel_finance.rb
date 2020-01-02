@@ -72,15 +72,21 @@ class WorldTradeDataQuote
   attr_accessor :symbol
 
   def initialize(symbol, api_key)
+    @base_uri = 'https://api.worldtradingdata.com/api/v1'
     @symbol = symbol
     @api_key = api_key
+
     self.call_api
 
     hash = JSON.parse(@response)
 
+    # We couldn't find the stock.  Let's look for it real quick.
     if hash['Message'].to_s.include? 'Error'
       @error = true
-      return
+      self.run_search
+      self.call_api
+      hash = JSON.parse(@response)
+      @error = false
     else
       @error = false
     end
@@ -119,14 +125,36 @@ class WorldTradeDataQuote
 
   # Let's see what we can get from the api.
   def call_api
-    url = "https://api.worldtradingdata.com/api/v1/stock"
+    url = "#{@base_uri}/stock"
     params = {symbol: @symbol, api_token: @api_key}
 
-    Lita.logger.debug "#{url} #{params.inspect}"
+    Lita.logger.debug "call_api: #{url} #{params.inspect}"
 
     @response = RestClient.get url, {params: params}
 
     Lita.logger.debug "response: #{@response}"
+  end
+
+  def run_search
+    url = "#{@base_uri}/stock_search"
+    params = {search_term: @symbol,
+              search_by: 'symbol,name',
+              stock_exchange: 'NASDAQ,NYSE',
+              limit: 5,
+              page: 1,
+              api_token: @api_key
+            }
+
+    Lita.logger.debug "run_search: #{url} #{params.inspect}"
+
+    response = RestClient.get url, {params: params}
+
+    Lita.logger.debug "response: #{@response}"
+    result = JSON.parse(response)
+
+    if result['total_returned'] == 1
+      @symbol = result['data'][0]['symbol']
+    end
   end
 
   def fix_number(price_str)
