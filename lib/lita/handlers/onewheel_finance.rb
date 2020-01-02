@@ -138,7 +138,7 @@ module Lita
             str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
           else
             str += "#{IrcColors::red} ↯$#{stock.change}#{IrcColors::reset}, #{IrcColors::red}#{stock.change_percent}%#{IrcColors::reset} "
-            str += "(#{stock.name})"
+            str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
           end
         end
 
