@@ -68,11 +68,20 @@ class AlphaVantageQuote
 end
 
 class WorldTradeDataQuote
-  attr_reader :symbol, :open, :high, :low, :price, :volume, :trading_day, :prev_close, :change, :change_percent, :exchange
+  attr_reader :open, :high, :low, :price, :volume, :trading_day, :prev_close, :change, :change_percent, :exchange, :error
+  attr_accessor :symbol
 
   def initialize(json_blob)
     Lita.logger.debug "parsing: #{json_blob}"
     hash = JSON.parse(json_blob)
+
+    if hash['Message'].to_s.include? 'Error'
+      @error = true
+      return
+    else
+      @error = false
+    end
+
     quote = hash['data'][0]
 
     quote.keys.each do |key|
@@ -117,12 +126,16 @@ module Lita
       def handle_quote(response)
         stock = handle_world_trade_data response.matches[0][0]
 
-        str = "#{IrcColors::grey}#{stock.exchange} - #{IrcColors::reset}#{stock.symbol}: #{IrcColors::blue}$#{stock.price}#{IrcColors::reset} "
-        if stock.change >= 0
-          # if irc
-          str += "#{IrcColors::green} ⬆$#{stock.change}#{IrcColors::reset}, #{IrcColors::green}#{stock.change_percent}%#{IrcColors::reset} "
+        if stock.error
+          str = "`#{stock.symbol}` not found on any stock exchange."
         else
-          str += "#{IrcColors::red} ↯$#{stock.change}#{IrcColors::reset}, #{IrcColors::red}#{stock.change_percent}%#{IrcColors::reset} "
+          str = "#{IrcColors::grey}#{stock.exchange} - #{IrcColors::reset}#{stock.symbol}: #{IrcColors::blue}$#{stock.price}#{IrcColors::reset} "
+          if stock.change >= 0
+            # if irc
+            str += "#{IrcColors::green} ⬆$#{stock.change}#{IrcColors::reset}, #{IrcColors::green}#{stock.change_percent}%#{IrcColors::reset} "
+          else
+            str += "#{IrcColors::red} ↯$#{stock.change}#{IrcColors::reset}, #{IrcColors::red}#{stock.change_percent}%#{IrcColors::reset} "
+          end
         end
 
         response.reply str
@@ -138,6 +151,10 @@ module Lita
         Lita.logger.debug "response: #{resp}"
 
         stock = WorldTradeDataQuote.new resp
+        if stock.error
+          stock.symbol = symbol
+        end
+        stock
       end
 
       # deprecated for now

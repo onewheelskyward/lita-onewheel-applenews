@@ -13,15 +13,19 @@ describe Lita::Handlers::OnewheelFinance, lita_handler: true do
   it 'quotes up' do
     mock_up 'worldtradedata-quote-up'
     send_command 'quote lulu'
-    puts replies.last
-    expect(replies.last).to include('NASDAQ - LULU: $233.01')
+    expect(replies.last).to include("\u000314NASDAQ - \u0003LULU: \u000302$233.01\u0003")
   end
 
   it 'quotes down' do
     mock_up 'worldtradedata-quote-down'
     send_command 'quote xlp'
-    puts replies.last
-    expect(replies.last).to include('NYSE - XLP: $62.51')
+    expect(replies.last).to include("\u000314NYSE - \u0003XLP: \u000302$62.51\u0003")
     expect(replies.last).to include('↯$-0.47')
+  end
+
+  it 'errors' do
+    mock_up 'worldtradedata-error'
+    send_command 'quote in'
+    expect(replies.last).to eq('`in` not found on any stock exchange.')
   end
 end
