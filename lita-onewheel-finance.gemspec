@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Andrew Kreps"]
   spec.email         = ["andrew.kreps@gmail.com"]
   spec.description   = "Wee li'l stock quote bot"
-  spec.summary       = spec.description
+  spec.summary       = "Designed to query stock indicies and return relevant data."
   spec.homepage      = "https://github.com/onewheelskyward/lita-onewheel-finance"
   spec.license       = "MIT"
   spec.metadata      = { "lita_plugin_type" => "handler" }

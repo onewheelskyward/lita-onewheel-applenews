@@ -117,7 +117,7 @@ module Lita
       def handle_quote(response)
         stock = handle_world_trade_data response.matches[0][0]
 
-        str = "#{stock.exchange} - #{stock.symbol}: $#{stock.price} "
+        str = "#{IrcColors::grey}#{stock.exchange} - #{IrcColors::reset}#{stock.symbol}: #{IrcColors::blue}$#{stock.price}#{IrcColors::reset} "
         if stock.change >= 0
           # if irc
           str += "#{IrcColors::green} ⬆$#{stock.change}#{IrcColors::reset}, #{IrcColors::green}#{stock.change_percent}%#{IrcColors::reset} "
