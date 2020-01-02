@@ -71,6 +71,72 @@ class WorldTradeDataQuote
   attr_reader :open, :high, :low, :price, :volume, :trading_day, :prev_close, :change, :change_percent, :exchange, :error, :name
   attr_accessor :symbol
 
+  def initialize(symbol, api_key)
+    @symbol = symbol
+    @api_key = api_key
+    self.call_api
+
+    hash = JSON.parse(@response)
+
+    if hash['Message'].to_s.include? 'Error'
+      @error = true
+      return
+    else
+      @error = false
+    end
+
+    quote = hash['data'][0]
+
+    quote.keys.each do |key|
+      case key
+      when "symbol"
+        @symbol = quote[key]
+      when "price_open"
+        @open = self.fix_number quote[key]
+      when "day_high"
+        @high = self.fix_number quote[key]
+      when "day_low"
+        @low = self.fix_number quote[key]
+      when "price"
+        @price = self.fix_number quote[key]
+      when "volume"
+        @volume = quote[key].to_i
+      when "last_trade_time"
+        @trading_day = quote[key]
+      when "08. previous close"
+        @prev_close = self.fix_number quote[key]
+      when "day_change"
+        @change = self.fix_number quote[key]
+      when "change_pct"
+        @change_percent = self.fix_number quote[key]
+      when 'stock_exchange_short'
+        @exchange = quote[key].sub /NYSEARCA/, 'NYSE'
+      when 'name'
+        @name = quote[key]
+      end
+    end
+  end
+
+  # Let's see what we can get from the api.
+  def call_api
+    url = "https://api.worldtradingdata.com/api/v1/stock"
+    params = {symbol: @symbol, api_token: @api_key}
+
+    Lita.logger.debug "#{url} #{params.inspect}"
+
+    @response = RestClient.get url, {params: params}
+
+    Lita.logger.debug "response: #{@response}"
+  end
+
+  def fix_number(price_str)
+    price_str.to_f.round(2)
+  end
+end
+
+class WorldTradeDataSearch
+  attr_reader :open, :high, :low, :price, :volume, :trading_day, :prev_close, :change, :change_percent, :exchange, :error, :name
+
   def initialize(json_blob)
     Lita.logger.debug "parsing: #{json_blob}"
     hash = JSON.parse(json_blob)
@@ -146,15 +212,7 @@ module Lita
       end
 
       def handle_world_trade_data(symbol)
-        url = "https://api.worldtradingdata.com/api/v1/stock"
-        params = {symbol: symbol, api_token: config.apikey}
-
-        Lita.logger.debug "#{url} #{params.inspect}"
-
-        resp = RestClient.get url, {params: params}
-        Lita.logger.debug "response: #{resp}"
-
-        stock = WorldTradeDataQuote.new resp
+        stock = WorldTradeDataQuote.new symbol, config.apikey
         if stock.error
           stock.symbol = symbol
         end
