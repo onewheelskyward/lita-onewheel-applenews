@@ -32,6 +32,7 @@ class GlobalQuote
   attr_reader :symbol, :open, :high, :low, :price, :volume, :trading_day, :prev_close, :change, :change_percent
 
   def initialize(json_blob)
+    Lita.logger.debug "parsing: #{json_blob}"
     hash = JSON.parse(json_blob)
     quote = hash["Global Quote"]
 
