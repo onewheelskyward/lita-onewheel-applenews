@@ -82,7 +82,7 @@ module Lita
         str = "#{stock.symbol}: $#{stock.price} "
         if stock.change >= 0
           # if irc
-          str += "#{Colors::green} ⇪#{stock.change}#{Colors::reset}, #{Colors::yellow}#{stock.change_percent}#{Colors::reset} "
+          str += "#{Colors::green} ⇪#{stock.change}#{Colors::reset}, #{Colors::green}#{stock.change_percent}#{Colors::reset} "
         else
           str += "#{Colors::red} ↯#{stock.change}#{Colors::reset}, #{Colors::red}#{stock.change_percent}#{Colors::reset} "
         end
