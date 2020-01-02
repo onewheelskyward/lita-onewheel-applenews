@@ -83,7 +83,10 @@ module Lita
         if stock.change >= 0
           # if irc
           str += "#{Colors::green} ⇡#{stock.change}#{Colors::reset}, #{Colors::green}#{stock.change_percent}#{Colors::reset} "
+        else
+          str += "#{Colors::red} ⇣⇩⇓⬇︎⟱⇊↯#{stock.change}#{Colors::reset}, #{Colors::red}#{stock.change_percent}#{Colors::reset} "
         end
+
         response.reply str
       end
 
