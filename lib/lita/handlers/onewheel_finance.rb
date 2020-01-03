@@ -91,7 +91,7 @@ class WorldTradeDataQuote
       else
         self.call_api
         hash = JSON.parse(@response)
-        #@error = false
+        @error = false
       end
     else
       @error = false
@@ -160,7 +160,7 @@ class WorldTradeDataQuote
 
     if result['total_returned'] == 1
       @symbol = result['data'][0]['symbol']
-    elsif result['total_returned'] > 1
+    elsif result['total_returned'].to_i > 1
       Lita.logger.debug "many search results: #{result.inspect}"
       x = result['data'].map { |k| k.values[0] }
       @message = "`#{symbol}` not found, did you mean one of #{x.join(', ')}?"
