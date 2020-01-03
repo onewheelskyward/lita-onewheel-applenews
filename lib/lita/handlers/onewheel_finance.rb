@@ -97,6 +97,12 @@ class WorldTradeDataQuote
       @error = false
     end
 
+    unless hash['data']
+      @message = "Error getting data for #{@symbol}"
+      @error = true
+      return
+    end
+
     quote = hash['data'][0]
 
     quote.keys.each do |key|

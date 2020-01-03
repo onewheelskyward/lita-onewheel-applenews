@@ -25,12 +25,24 @@ describe Lita::Handlers::OnewheelFinance, lita_handler: true do
     expect(replies.last).to include('(Consumer Staples Select Sector SPDR Fund)')
   end
 
-  it 'errors' do
-    mock_up 'worldtradedata-error'
-    send_command 'quote in'
-    expect(replies.last).to eq('`in` not found on any stock exchange.')
+  it 'nasdaq:lulu' do
+    mock_up 'worldtradedata-quote-up'
+    send_command 'q nasdaq:lulu'
+    expect(replies.last).to include("\u000314NASDAQ - \u0003LULU: \u000302$233.01\u0003")
   end
 
+  #it 'errors' do
+  #  mock_up 'worldtradedata-error'
+  #  send_command 'quote in'
+  #  expect(replies.last).to eq('`in` not found on any stock exchange.')
+  #end
+
+
+  # This doesn't exist
+  #it 'TADAWUL:2222' do
+  #  mock_up 'worldtradedata-TADAWUL-2222.json'
+  #
+  #end
   #it 'searches with 1 result' do
   #  mock_up 'worldtradedata-search-1'
   #  send_command 'quote nike'
