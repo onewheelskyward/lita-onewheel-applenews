@@ -76,6 +76,10 @@ class WorldTradeDataQuote
     @symbol = symbol
     @api_key = api_key
 
+    if @symbol[':']
+      (@exchange, @symbol) = @symbol.split /:/
+    end
+
     self.call_api
 
     hash = JSON.parse(@response)
@@ -139,6 +143,10 @@ class WorldTradeDataQuote
   def call_api
     url = "#{@base_uri}/stock"
     params = {symbol: @symbol, api_token: @api_key}
+
+    if @exchange
+      params[:stock_exchange] = @exchange
+    end
 
     Lita.logger.debug "call_api: #{url} #{params.inspect}"
 
