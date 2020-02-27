@@ -21,7 +21,23 @@ class IrcColors
   @reset  = prefix
 
   class << self
-    attr_reader :white, :black, :blue, :green, :red, :brown, :purple, :orange, :yellow, :lime, :teal, :aqua, :royal, :pink, :grey, :silver, :reset
+    attr_reader :white,
+                :black,
+                :blue,
+                :green,
+                :red,
+                :brown,
+                :purple,
+                :orange,
+                :yellow,
+                :lime,
+                :teal,
+                :aqua,
+                :royal,
+                :pink,
+                :grey,
+                :silver,
+                :reset
   end
 
   def initialize
@@ -68,7 +84,7 @@ class AlphaVantageQuote
 end
 
 class WorldTradeDataQuote
-  attr_reader :open, :high, :low, :price, :volume, :trading_day, :prev_close, :change, :change_percent, :exchange, :error, :name, :message
+  attr_reader :open, :high, :low, :price, :volume, :trading_day, :prev_close, :change, :change_percent, :exchange, :error, :name, :message, :is_index
   attr_accessor :symbol
 
   def initialize(symbol, api_key)
@@ -78,6 +94,12 @@ class WorldTradeDataQuote
 
     if @symbol[':']
       (@exchange, @symbol) = @symbol.split /:/
+    end
+
+    if @symbol['^']
+      @is_index = true
+    else
+      @is_index = false
     end
 
     self.call_api
@@ -136,6 +158,10 @@ class WorldTradeDataQuote
       when 'name'
         @name = quote[key]
       end
+    end
+
+    def is_index?
+      is_index
     end
   end
 
@@ -202,13 +228,18 @@ module Lita
             str = "`#{stock.symbol}` not found on any stock exchange."
           end
         else
-          str = "#{IrcColors::grey}#{stock.exchange} - #{IrcColors::reset}#{stock.symbol}: #{IrcColors::blue}$#{stock.price}#{IrcColors::reset} "
+          dollar_sign = '$'
+          if stock.is_index?
+            dollar_sign = ''
+          end
+
+          str = "#{IrcColors::grey}#{stock.exchange} - #{IrcColors::reset}#{stock.symbol}: #{IrcColors::blue}#{dollar_sign}#{stock.price}#{IrcColors::reset} "
           if stock.change >= 0
             # if irc
-            str += "#{IrcColors::green} ⬆$#{stock.change}#{IrcColors::reset}, #{IrcColors::green}#{stock.change_percent}%#{IrcColors::reset} "
+            str += "#{IrcColors::green} ⬆#{dollar_sign}#{stock.change}#{IrcColors::reset}, #{IrcColors::green}#{stock.change_percent}%#{IrcColors::reset} "
             str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
           else
-            str += "#{IrcColors::red} ↯$#{stock.change}#{IrcColors::reset}, #{IrcColors::red}#{stock.change_percent}%#{IrcColors::reset} "
+            str += "#{IrcColors::red} ↯#{dollar_sign}#{stock.change}#{IrcColors::reset}, #{IrcColors::red}#{stock.change_percent}%#{IrcColors::reset} "
             str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
           end
         end

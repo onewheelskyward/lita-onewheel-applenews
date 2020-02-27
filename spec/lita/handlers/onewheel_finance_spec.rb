@@ -31,6 +31,12 @@ describe Lita::Handlers::OnewheelFinance, lita_handler: true do
     expect(replies.last).to include("\u000314NASDAQ - \u0003LULU: \u000302$233.01\u0003")
   end
 
+  it 'removes $ from ^ reqs' do
+    mock_up 'worldtradedata-quote-dji'
+    send_command 'q ^dji'
+    expect(replies.last).to include("\u000314INDEXDJX - \u0003^DJI: \u00030225766.64\u0003 \u000304 ↯-1190.95\u0003, \u000304-4.42%\u0003 \u000314(Dow Jones Industrial Average)\u0003")
+  end
+
   #it 'errors' do
   #  mock_up 'worldtradedata-error'
   #  send_command 'quote in'

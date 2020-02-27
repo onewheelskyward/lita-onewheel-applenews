@@ -1,0 +1,32 @@
+{
+  "symbols_requested": 1,
+  "symbols_returned": 1,
+  "data": [
+    {
+      "symbol": "^DJI",
+      "name": "Dow Jones Industrial Average",
+      "currency": "N/A",
+      "price": "25766.64",
+      "price_open": "26526.00",
+      "day_high": "26775.31",
+      "day_low": "25752.82",
+      "52_week_high": "29568.57",
+      "52_week_low": "24680.57",
+      "day_change": "-1190.95",
+      "change_pct": "-4.42",
+      "close_yesterday": "26957.59",
+      "market_cap": "N/A",
+      "volume": "664922874",
+      "volume_avg": "N/A",
+      "shares": "N/A",
+      "stock_exchange_long": "",
+      "stock_exchange_short": "INDEXDJX",
+      "timezone": "EST",
+      "timezone_name": "America/New_York",
+      "gmt_offset": "-18000",
+      "last_trade_time": "2020-02-27 16:17:34",
+      "pe": "N/A",
+      "eps": "N/A"
+    }
+  ]
+}
