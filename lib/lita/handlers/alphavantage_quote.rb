@@ -9,6 +9,10 @@ class AlphaVantageQuote
     @apikey = apikey
     @is_index = false
 
+    if @symbol[0] == '^'
+      @is_index = true
+    end
+
     response = call_api
     hash = JSON.parse response
 
