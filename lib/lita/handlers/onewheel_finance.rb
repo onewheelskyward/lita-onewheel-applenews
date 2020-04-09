@@ -7,13 +7,22 @@ module Lita
   module Handlers
     class OnewheelFinance < Handler
       config :apikey, required: true
+      config :handler, default: 'alphavantage'
       route /qu*o*t*e*\s+(.+)/i, :handle_quote, command: true
       # route /q2\s+(.+)/i, :handle_alphavantage, command: true
 
       def handle_quote(response)
-        # stock = handle_world_trade_data response.matches[0][0]
-        stock = handle_alphavantage response.matches[0][0]
+        stock = nil
+        if config.handler == 'worldtradedata'
+          stock = handle_world_trade_data response.matches[0][0]
+        elsif config.handler == 'alphavantage'
+          stock = handle_alphavantage response.matches[0][0]
+        else
+          Lita.logger.error "Unknown/missing config.handler #{config.handler}.  Try 'worldtradedata' or 'alphavantage'"
+          return
+        end
 
+        # Continue!
         if stock.error
           if stock.message
             str = stock.message
