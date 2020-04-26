@@ -1,6 +1,7 @@
 require_relative 'irc_colors'
 require_relative 'alphavantage_quote'
 require_relative 'worldtradedata_quote'
+require_relative 'yahoo_quote'
 require 'rest-client'
 
 module Lita
@@ -17,6 +18,8 @@ module Lita
           stock = handle_world_trade_data response.matches[0][0]
         elsif config.handler == 'alphavantage'
           stock = handle_alphavantage response.matches[0][0]
+        elsif config.handler == 'yahoo'
+          stock = handle_yahoo response.matches[0][0]
         else
           Lita.logger.error "Unknown/missing config.handler #{config.handler}.  Try 'worldtradedata' or 'alphavantage'"
           return
@@ -60,6 +63,11 @@ module Lita
       # deprecated for now
       def handle_alphavantage(symbol)
        stock = AlphaVantageQuote.new symbol, config.apikey
+      end
+
+      # welp
+      def handle_yahoo(symbol)
+       stock = YahooQuote.new symbol, config.apikey
       end
 
       Lita.register_handler(self)
