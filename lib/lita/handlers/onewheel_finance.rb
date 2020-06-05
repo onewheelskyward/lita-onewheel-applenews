@@ -8,6 +8,7 @@ module Lita
   module Handlers
     class OnewheelFinance < Handler
       config :apikey, required: true
+      config :mode, default: 'irc'
       config :handler, default: 'alphavantage'
       route /qu*o*t*e*\s+(.+)/i, :handle_quote, command: true
       # route /q2\s+(.+)/i, :handle_alphavantage, command: true
@@ -38,14 +39,27 @@ module Lita
             dollar_sign = ''
           end
 
-          str = "#{IrcColors::grey}#{stock.exchange} - #{IrcColors::reset}#{stock.symbol}: #{IrcColors::blue}#{dollar_sign}#{stock.price}#{IrcColors::reset} "
-          if stock.change >= 0
-            # if irc
-            str += "#{IrcColors::green} ⬆#{dollar_sign}#{stock.change}#{IrcColors::reset}, #{IrcColors::green}#{stock.change_percent}%#{IrcColors::reset} "
-            str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
+          # IRC mode
+          if config.mode == 'irc'
+            str = "#{IrcColors::grey}#{stock.exchange} - #{IrcColors::reset}#{stock.symbol}: #{IrcColors::blue}#{dollar_sign}#{stock.price}#{IrcColors::reset} "
+            if stock.change >= 0
+              # if irc
+              str += "#{IrcColors::green} ⬆#{dollar_sign}#{stock.change}#{IrcColors::reset}, #{IrcColors::green}#{stock.change_percent}%#{IrcColors::reset} "
+              str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
+            else
+              str += "#{IrcColors::red} ↯#{dollar_sign}#{stock.change}#{IrcColors::reset}, #{IrcColors::red}#{stock.change_percent}%#{IrcColors::reset} "
+              str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
+            end
           else
-            str += "#{IrcColors::red} ↯#{dollar_sign}#{stock.change}#{IrcColors::reset}, #{IrcColors::red}#{stock.change_percent}%#{IrcColors::reset} "
-            str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
+            str = "#{stock.exchange} - #{stock.symbol}: #{dollar_sign}#{stock.price} "
+            if stock.change >= 0
+              # if irc
+              str += " :arrow_up:#{dollar_sign}#{stock.change}, :heavy_plus_sign:#{stock.change_percent}% "
+              str += "(#{stock.name})"
+            else
+              str += " :chart_with_downwards_trend:#{dollar_sign}#{stock.change}, :heavy_minus_sign:#{stock.change_percent}% "
+              str += "(#{stock.name})"
+            end
           end
         end
 
