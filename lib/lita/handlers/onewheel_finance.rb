@@ -41,24 +41,32 @@ module Lita
 
           # IRC mode
           if config.mode == 'irc'
-            str = "#{IrcColors::grey}#{stock.exchange} - #{IrcColors::reset}#{stock.symbol}: #{IrcColors::blue}#{dollar_sign}#{stock.price}#{IrcColors::reset} "
+            str = "#{IrcColors::grey}#{stock.exchange} - #{IrcColors::reset}#{stock.symbol}: #{IrcColors::blue}#{dollar_sign}#{"%.2f" % stock.price}#{IrcColors::reset} "
             if stock.change >= 0
               # if irc
-              str += "#{IrcColors::green} ⬆#{dollar_sign}#{stock.change}#{IrcColors::reset}, #{IrcColors::green}#{stock.change_percent}%#{IrcColors::reset} "
-              str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
+              str += "#{IrcColors::green} ⬆#{dollar_sign}#{"%.2f" % stock.change}#{IrcColors::reset}, #{IrcColors::green}#{stock.change_percent}%#{IrcColors::reset} "
+              if stock.name
+                str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
+              end
             else
-              str += "#{IrcColors::red} ↯#{dollar_sign}#{stock.change}#{IrcColors::reset}, #{IrcColors::red}#{stock.change_percent}%#{IrcColors::reset} "
-              str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
+              str += "#{IrcColors::red} ↯#{dollar_sign}#{"%.2f" % stock.change}#{IrcColors::reset}, #{IrcColors::red}#{stock.change_percent}%#{IrcColors::reset} "
+              if stock.name
+                str += "#{IrcColors::grey}(#{stock.name})#{IrcColors::reset}"
+              end
             end
           else
-            str = "#{stock.exchange} - #{stock.symbol}: #{dollar_sign}#{stock.price} "
+            str = "#{stock.exchange} - #{stock.symbol}: #{dollar_sign}#{"%.2f" % stock.price} "
             if stock.change >= 0
               # if irc
-              str += " :arrow_up:#{dollar_sign}#{stock.change}, :heavy_plus_sign:#{stock.change_percent}% "
-              str += "(#{stock.name})"
+              str += " :arrow_up:#{dollar_sign}#{"%.2f" % stock.change}, :heavy_plus_sign:#{stock.change_percent}% "
+              if stock.name
+                str += "(#{stock.name})"
+              end
             else
-              str += " :chart_with_downwards_trend:#{dollar_sign}#{stock.change}, :heavy_minus_sign:#{stock.change_percent}% "
-              str += "(#{stock.name})"
+              str += " :chart_with_downwards_trend:#{dollar_sign}#{"%.2f" % stock.change}, :heavy_minus_sign:#{stock.change_percent}% "
+              if stock.name
+                str += "(#{stock.name})"
+              end
             end
           end
         end

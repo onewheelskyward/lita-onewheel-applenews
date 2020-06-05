@@ -35,9 +35,8 @@ class YahooQuote
     @change_percent = self.fix_number ((@change / @price) * 100)
   end
 
-  # Apparently rounding stopped working at some point for trailing 0's
   def fix_number(price_str)
-    "%.2f" % price_str.to_f.round(2)
+    price_str.to_f.round(2)
   end
 
   def is_index?
