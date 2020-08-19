@@ -41,7 +41,7 @@ module Lita
 
           # IRC mode
           if config.mode == 'irc'
-            str = "#{IrcColors::grey}#{stock.exchange} - #{IrcColors::reset}#{stock.symbol}: #{IrcColors::blue}#{dollar_sign}#{"%.2f" % stock.price}#{IrcColors::reset} "
+            str = "#{IrcColors::grey}#{stock.exchange} - #{IrcColors::reset}#{stock.symbol}: #{IrcColors::teal}#{dollar_sign}#{"%.2f" % stock.price}#{IrcColors::reset} "
             if stock.change >= 0
               # if irc
               str += "#{IrcColors::green} ⬆#{dollar_sign}#{"%.2f" % stock.change}#{IrcColors::reset}, #{IrcColors::green}#{stock.change_percent}%#{IrcColors::reset} "

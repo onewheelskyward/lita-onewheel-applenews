@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "lita-onewheel-finance"
-  spec.version       = "0.7.3"
+  spec.version       = "0.7.4"
   spec.authors       = ["Andrew Kreps"]
   spec.email         = ["andrew.kreps@gmail.com"]
   spec.description   = "Wee li'l stock quote bot"
