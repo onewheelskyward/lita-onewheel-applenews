@@ -44,7 +44,7 @@ class YahooQuote
   end
 
   def call_api
-    url = "https://query1.finance.yahoo.com/v8/finance/chart/#{URI::escape @symbol}"
+    url = "https://query1.finance.yahoo.com/v8/finance/chart/#{URI.encode_www_form_component @symbol}"
     Lita.logger.debug "#{url}"
     response = RestClient.get url
 
