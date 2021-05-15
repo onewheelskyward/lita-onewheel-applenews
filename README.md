@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/onewheelskyward/lita-onewheel-applenews.png?branch=master)](https://travis-ci.org/onewheelskyward/lita-onewheel-applenews)
 [![Coverage Status](https://coveralls.io/repos/onewheelskyward/lita-onewheel-applenews/badge.png)](https://coveralls.io/r/onewheelskyward/lita-onewheel-applenews)
 
-TODO: Add a description of the plugin.
+Grabs the real url from apple news posts because I don't like or use apple news.  Hat tip to @samgrover for the idea & initial implementation.
 
 ## Installation
 
@@ -15,8 +15,8 @@ gem "lita-onewheel-applenews"
 
 ## Configuration
 
-TODO: Describe any configuration attributes the plugin exposes.
+n/a
 
 ## Usage
 
-TODO: Describe the plugin's features and how to use them.
+anytime apple.news comes up, it grabs the content and finds the reference url in redirectToUrlAfterTimeout.
