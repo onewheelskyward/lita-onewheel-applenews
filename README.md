@@ -1,16 +1,16 @@
-# lita-onewheel-finance
+# lita-onewheel-applenews
 
-[![Build Status](https://travis-ci.org/onewheelskyward/lita-onewheel-finance.png?branch=master)](https://travis-ci.org/onewheelskyward/lita-onewheel-finance)
-[![Coverage Status](https://coveralls.io/repos/onewheelskyward/lita-onewheel-finance/badge.png)](https://coveralls.io/r/onewheelskyward/lita-onewheel-finance)
+[![Build Status](https://travis-ci.org/onewheelskyward/lita-onewheel-applenews.png?branch=master)](https://travis-ci.org/onewheelskyward/lita-onewheel-applenews)
+[![Coverage Status](https://coveralls.io/repos/onewheelskyward/lita-onewheel-applenews/badge.png)](https://coveralls.io/r/onewheelskyward/lita-onewheel-applenews)
 
 TODO: Add a description of the plugin.
 
 ## Installation
 
-Add lita-onewheel-finance to your Lita instance's Gemfile:
+Add lita-onewheel-applenews to your Lita instance's Gemfile:
 
 ``` ruby
-gem "lita-onewheel-finance"
+gem "lita-onewheel-applenews"
 ```
 
 ## Configuration

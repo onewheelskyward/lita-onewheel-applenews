@@ -1,11 +1,11 @@
 Gem::Specification.new do |spec|
-  spec.name          = "lita-onewheel-finance"
-  spec.version       = "0.7.4"
+  spec.name          = "lita-onewheel-applenews"
+  spec.version       = "0.0.0"
   spec.authors       = ["Andrew Kreps"]
   spec.email         = ["andrew.kreps@gmail.com"]
-  spec.description   = "Wee li'l stock quote bot"
-  spec.summary       = "Designed to query stock indicies and return relevant data."
-  spec.homepage      = "https://github.com/onewheelskyward/lita-onewheel-finance"
+  spec.description   = "Wee li'l apple news dereferencer"
+  spec.summary       = "Apple news hides news, this fixes it"
+  spec.homepage      = "https://github.com/onewheelskyward/lita-onewheel-applenews"
   spec.license       = "MIT"
   spec.metadata      = { "lita_plugin_type" => "handler" }
 
