@@ -6,7 +6,7 @@ def mock_up(filename)
 end
 
 describe Lita::Handlers::OnewheelApplenews, lita_handler: true do
-  it 'quotes up' do
+  it 'cocks about' do
     mock_up 'fil'
     send_message 'https://apple.news/ALjDjYg-3QKuFStFxUMRpZA'
     expect(replies.last).to include('https://www.cnn.com/2021/05/03/tech/bill-and-melinda-gates-divorce/index.html')

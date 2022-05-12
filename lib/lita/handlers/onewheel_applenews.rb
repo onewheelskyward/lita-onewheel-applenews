@@ -3,7 +3,8 @@ require 'rest-client'
 module Lita
   module Handlers
     class OnewheelApplenews < Handler
-      route /(.*apple.news\/.*)/i, :handle_applenews
+      route /(.*apple.news\/[^\s]+)/i, :handle_applenews
+      route /(.*stocks.apple.com\/[^\s]+)/i, :handle_applenews
 
       def handle_applenews(response)
         Lita.logger.info("Fetching #{response.matches[0][0]}")
